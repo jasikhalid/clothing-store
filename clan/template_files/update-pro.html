@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="UTF-8">
+  <title>Change Product</title>
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'css/elegant-icons.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+</head>
+<body>
+
+<header class="header">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xl-3 col-lg-2">
+        <div class="header__logo">
+          <a href="#"><img src="{% static 'img/logo.png' %}" alt=""></a>
+        </div>
+      </div>
+      <div class="col-xl-6 col-lg-7">
+        <nav class="header__menu">
+          <ul>
+            <li class="active"><a href="dashboard">Admin Home</a></li>
+            <li><a href="#">Product Management</a>
+                                <ul class="dropdown">
+                                    <li><a href="admin-pro">Add Products</a></li>
+                                    <li><a href="update">Change Products</a></li>
+                                    <li><a href="delete">Remove Products</a></li>
+                                </ul>
+                            </li>
+            <li><a href="orders">Orders</a></li>
+            <li><a href="blog">Blog</a></li>
+            <li><a href="contact">Messages</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="col-lg-3">
+        <div class="header__right">
+          <ul class="header__right__widget">
+            <li><span class="icon_search search-switch"></span></li>
+            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+            <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="canvas__open"><i class="fa fa-bars"></i></div>
+  </div>
+</header>
+<!-- Header Section End -->
+
+<section class="checkout spad">
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col-lg-12 text-center">
+        <h3>Change Product Details</h3>
+        <p>Modify product information and update it in your store.</p>
+      </div>
+    </div>
+
+    <!-- Form Start -->
+    <!-- Form Start -->
+<form id="productForm" action="update" class="checkout__form" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="checkout__form__input">
+    <p>Product ID <span>*</span></p>
+    <input type="text" id="productID" name="ids" placeholder="Enter Product ID to Update" required>
+  </div>
+
+  <fieldset id="editSection" disabled>
+    <div class="checkout__form__input">
+      <p>Product Name <span>*</span></p>
+      <input type="text" name="name" placeholder="New Product Name">
+    </div>
+
+    <div class="checkout__form__input">
+      <p>Description</p>
+      <input type="text" name="description" placeholder="Update description">
+    </div>
+
+    <div class="checkout__form__input">
+      <p>Price</p>
+      <input type="number" name="price" placeholder="Update price">
+    </div>
+
+    <div class="checkout__form__input">
+      <p>New Image (optional)</p>
+      <input type="file" name="img">
+    </div>
+
+    <div>
+      <p>Gender</p>
+      <input type="radio" name="gender" value="men"><label>Men</label>
+      <input type="radio" name="gender" value="women"><label>Women</label>
+    </div>
+
+    <div>
+      <p>Category</p>
+      <input type="radio" name="category" value="accessory"><label>Accessories</label>
+      <input type="radio" name="category" value="footwear"><label>Footwear</label>
+      <input type="radio" name="category" value="luxury"><label>Luxury</label>
+      <input type="radio" name="category" value="streetwear"><label>Streetwear</label>
+      <input type="radio" name="category" value="sportswear"><label>Sportswear</label>
+    </div>
+
+    <!-- Sizes -->
+    <div>
+      <p>Available Sizes</p>
+      <input type="checkbox" id="small" name="size1" value="small"><label for="small">Small</label>
+      <div id="smallQty" class="checkout__form__input" style="display:none;">
+        <p>Quantity for Small</p>
+        <input type="number" name="quantity1" value="0">
+      </div>
+
+      <input type="checkbox" id="medium" name="size2" value="medium"><label for="medium">Medium</label>
+      <div id="mediumQty" class="checkout__form__input" style="display:none;">
+        <p>Quantity for Medium</p>
+        <input type="number" name="quantity2" value="0">
+      </div>
+
+      <input type="checkbox" id="large" name="size3" value="large"><label for="large">Large</label>
+      <div id="largeQty" class="checkout__form__input" style="display:none;">
+        <p>Quantity for Large</p>
+        <input type="number" name="quantity3" value="0">
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <button type="submit" class="site-btn">Update Product</button>
+    </div>
+  </fieldset>
+</form>
+<!-- Form End -->
+
+    <!-- Form End -->
+  </div>
+</section>
+
+<!-- Footer Section Begin -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <p>© <script>document.write(new Date().getFullYear());</script> All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- Footer Section End -->
+
+<script>
+  // Enable all fields once Product ID is entered
+  const productID = document.getElementById("productID");
+  const editSection = document.getElementById("editSection");
+
+  productID.addEventListener("input", function() {
+    if (this.value.trim() !== "") {
+      editSection.disabled = false;
+    } else {
+      editSection.disabled = true;
+    }
+  });
+
+  // Show/hide quantity boxes for sizes
+  document.getElementById("small").addEventListener("change", function() {
+    document.getElementById("smallQty").style.display = this.checked ? "block" : "none";
+  });
+  document.getElementById("medium").addEventListener("change", function() {
+    document.getElementById("mediumQty").style.display = this.checked ? "block" : "none";
+  });
+  document.getElementById("large").addEventListener("change", function() {
+    document.getElementById("largeQty").style.display = this.checked ? "block" : "none";
+  });
+</script>
+
+
+</body>
+</html>
