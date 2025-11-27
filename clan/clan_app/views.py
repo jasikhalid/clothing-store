@@ -249,19 +249,24 @@ def add_to_order(request, ids):
         return redirect('index')
     else:
         return redirect('log')
-def update_quantity(request):
-    if request.method == "POST":
-        order_id = request.POST.get("order_id")
-        quantity = request.POST.get("quantity")
+def qty_inc(request, ids):
+    try:
+        order = orders.objects.get(ids=ids)
+        orders.quantity += 1
+        order.save()
+        return redirect("shop_cart")
+    except orders.DoesNotExist:
+        return HttpResponse("Order not found")
 
-        try:
-            order = orders.objects.get(ids=order_id)
-            order.quantity = quantity
-            order.save()
-
-            return JsonResponse({"status": "success", "qty": quantity})
-        except orders.DoesNotExist:
-            return JsonResponse({"status": "error", "message": "Order not found"})
+def qty_dec(request,ids):
+    try:
+        order = orders.objects.get(ids=ids)
+        if orders.quantity > 1:
+            orders.quantity -= 1
+        order.save()
+        return redirect("shop_cart")
+    except orders.DoesNotExist:
+        return HttpResponse("Order not found")
 
 
 

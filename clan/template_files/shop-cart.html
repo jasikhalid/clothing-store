@@ -161,12 +161,20 @@
                                     </td>
                                     <td class="cart__price">{{i.price}}</td>
                                     <td class="cart__quantity">
-                                        <div class="pro-qty">
-                                            <input type="number" value="{{ qty.quantity }}"
-                                                   class="qty-input"
-                                                   data-order-id="{{ qty.ids }}">
-                                        </div>
+                                            {{ i.quantity }}
                                     </td>
+                                    <!-- INCREASE / DECREASE BUTTONS -->
+        <td>
+            <form action="{% url 'qty_dec' i.ids %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">−</button>
+            </form>
+
+            <form action="{% url 'qty_inc' i.ids %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">+</button>
+            </form>
+        </td>
                                     <td class="cart__total">{{i.price}}</td>
                                     <td class="cart__close"><span class="icon_close"></span></td>
                                 </tr>

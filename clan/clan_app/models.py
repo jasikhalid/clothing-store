@@ -44,6 +44,7 @@ class ContactMessage(models.Model):
     def __str__(self):
         return self.name
 class orders(models.Model):
+    objects = None
     username = models.CharField(max_length=30)
     name = models.CharField(max_length=30)
     ids = models.CharField(max_length=10)
