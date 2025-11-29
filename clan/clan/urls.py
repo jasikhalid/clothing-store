@@ -43,9 +43,8 @@ urlpatterns = [
     path('favorite',views.favorite),
     path('add_to_wishlist/<str:ids>/', views.add_to_wishlist, name='add_to_wishlist'),
     path('remove_from_wishlist/<str:ids>/', views.remove_from_wishlist, name='remove_from_wishlist'),
-    path('add-to-order/<str:ids>/', views.add_to_order, name='add_to_order'),
-    path("quantity/inc/<str:ids>/", views.qty_inc, name="qty_inc"),
-    path("quantity/dec/<str:ids>/", views.qty_dec, name="qty_dec"),
+    path('add_to_cart/<str:ids>/', views.add_to_cart, name='add_to_cart'),
+
 
 
 ]

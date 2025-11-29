@@ -230,21 +230,7 @@ proQty.on('click', '.qtybtn', function () {
     $input.val(newVal);
 
     // 🔥 SEND AJAX TO DJANGO
-    $.ajax({
-        url: "/update-quantity/",
-        type: "POST",
-        data: {
-            order_id: $input.data('order-id'),   // comes from your HTML
-            quantity: newVal,
-            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
-        },
-        success: function (response) {
-            console.log("Updated quantity:", response);
-        },
-        error: function () {
-            console.log("Failed to update quantity!");
-        }
-    });
+
 
 });
 

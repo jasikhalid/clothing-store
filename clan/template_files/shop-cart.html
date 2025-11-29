@@ -23,6 +23,8 @@
     <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -165,15 +167,7 @@
                                     </td>
                                     <!-- INCREASE / DECREASE BUTTONS -->
         <td>
-            <form action="{% url 'qty_dec' i.ids %}" method="POST" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit">−</button>
-            </form>
 
-            <form action="{% url 'qty_inc' i.ids %}" method="POST" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit">+</button>
-            </form>
         </td>
                                     <td class="cart__total">{{i.price}}</td>
                                     <td class="cart__close"><span class="icon_close"></span></td>

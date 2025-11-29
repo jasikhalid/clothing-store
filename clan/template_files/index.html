@@ -203,7 +203,7 @@
                         <ul class="product__hover">
                             <li><a href="{{i.img.url}}" class="image-popup"><span class="fas fa-image"></span></a></li>
                             <li><a href="{% url 'add_to_wishlist' i.ids %}"><span class="fas fa-heart"></span></a></li>
-                            <li><a href="{% url 'add_to_order' i.ids %}"><span class="fas fa-shopping-cart"></span></a></li>
+                            <li><a href="{% url 'add_to_cart' i.ids %}"<span class="fas fa-shopping-cart"></span></a></li>
                         </ul>
                     </div>
                     <div class="product__item__text">

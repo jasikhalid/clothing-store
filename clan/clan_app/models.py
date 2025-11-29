@@ -43,21 +43,20 @@ class ContactMessage(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.name
-class orders(models.Model):
-    objects = None
-    username = models.CharField(max_length=30)
-    name = models.CharField(max_length=30)
-    ids = models.CharField(max_length=10)
-    product_image = models.FileField()
-    quantity = models.PositiveIntegerField(default=1)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    order_date = models.DateTimeField(default=datetime.now)
-    def __str__(self):
-        return self.username
 class favorites(models.Model):
     username = models.CharField(max_length=40)
     product_name = models.CharField(max_length=40)
     product_image = models.FileField()
     price = models.IntegerField()
+    def __str__(self):
+        return self.product_name
+class cart(models.Model):
+    ids=models.CharField(max_length=10,unique=True)
+    product_name = models.CharField(max_length=40)
+    quantity = models.PositiveIntegerField(default=1)
+    product_image = models.FileField()
+    price = models.IntegerField()
+    username = models.CharField(max_length=40)
+    date = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.product_name

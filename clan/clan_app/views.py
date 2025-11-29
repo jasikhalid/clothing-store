@@ -46,6 +46,7 @@ def regis(request):
             return HttpResponse(msg)
     else:
         return render(request,'register.html')
+
 def logi(request):
     if request.method == "POST":
         a = request.POST['user']
@@ -64,21 +65,26 @@ def logi(request):
                 return HttpResponse(k)
     else:
         return render(request,'log.html')
+
 def landing(request):
     return render(request,'landing.html')
+
 def logout(request):
     if 'id' in request.session:
         request.session.flush()
         return redirect(landing)
+
 def shop(request):
     data = products.objects.all()[:9]
     return render(request,'shop.html',{'data':data})
+
 def shop_cart(request):
-    data1=orders.objects.all()
-    data = products.objects.all()
-    return render(request,'shop-cart.html' ,{'data':data,'data1':data1})
+    data1=cart.objects.all()
+    return render(request,'shop-cart.html' ,{'data1':data1})
+
 def product_details(request):
     return render(request,'product-details.html')
+
 def contact(request):
     if request.method == "POST":
         a = request.POST['name']
@@ -90,10 +96,13 @@ def contact(request):
         return render(request,'contact.html')
     else:
         return render(request,'contact.html')
+
 def checkout(request):
     return render(request,'checkout.html')
+
 #def adminpanel(request):
 # return render(request,'adminpanel.html')
+
 def admin_pro(request):
     if request.method == "POST":
         a = request.POST.get('name')
@@ -140,8 +149,10 @@ def admin_pro(request):
         return render(request, 'admin-pro.html', {'msg': 'Product added successfully!'})
     else:
         return render(request, 'admin-pro.html')
+
 def product(request):
     return render(request, 'products.html')
+
 def update(request):
     if request.method == "POST":
         product_id = request.POST.get('ids')
@@ -204,18 +215,24 @@ def delete(request):
         return render(request, 'delete-pro.html')
     else:
         return render(request, 'delete-pro.html')
+
 def dashboard(request):
     return render(request, 'dashboard.html')
+
 def admin_orders(request):
     orders = orders.objects.all()
     return render(request, 'admin-order.html',{'orders':orders})
+
 def message(request):
     msgs = ContactMessage.objects.all().order_by('-date')
     return render(request, 'adminmessage.html', {'message': msgs})
+
 def blog(request):
     return render(request, 'blog.html')
+
 def blog_details(request):
     return render(request, 'blog-details.html')
+
 
 def favorite(request):
     if 'id' in request.session:
@@ -233,40 +250,39 @@ def add_to_wishlist(request, ids):
     else:
         return redirect(logi)
 
-
 def remove_from_wishlist(request, ids):
     favorite = favorites.objects.filter(user=request.user, ids=ids)
     favorite.delete()
     return redirect('favorite')
 
+def add_to_cart(request, ids):
+    if 'id' not in request.session:
+        return redirect(logi)
 
-def add_to_order(request, ids):
-    if 'id' in request.session:
-        u=request.session['id']
-        product = products.objects.get(ids=ids)
-        orderr=orders.objects.create(username=u, name=product.name,product_image=product.img,price=product.price,ids=products.ids)
-        orderr.save()
-        return redirect('index')
-    else:
-        return redirect('log')
-def qty_inc(request, ids):
-    try:
-        order = orders.objects.get(ids=ids)
-        orders.quantity += 1
-        order.save()
-        return redirect("shop_cart")
-    except orders.DoesNotExist:
-        return HttpResponse("Order not found")
+    u = request.session['id']
+    product = get_object_or_404(products, ids=ids)
 
-def qty_dec(request,ids):
-    try:
-        order = orders.objects.get(ids=ids)
-        if orders.quantity > 1:
-            orders.quantity -= 1
-        order.save()
-        return redirect("shop_cart")
-    except orders.DoesNotExist:
-        return HttpResponse("Order not found")
+    # either get existing cart item or create a new one with quantity = 1
+    cart_item, created = cart.objects.get_or_create(
+        username=u,
+        ids=product.ids,   # key that identifies this product in the cart
+        defaults={
+            'product_name': product.name,
+            'product_image': product.img,
+            'price': product.price,
+            'quantity': 1,  # default when created
+        }
+    )
+
+    if not created:
+        # now we have an instance, so this is valid
+        cart_item.quantity += 1
+        cart_item.save()
+
+    return redirect(shop_cart)
+
+
+
 
 
 
