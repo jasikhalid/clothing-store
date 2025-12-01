@@ -44,6 +44,10 @@ urlpatterns = [
     path('add_to_wishlist/<str:ids>/', views.add_to_wishlist, name='add_to_wishlist'),
     path('remove_from_wishlist/<str:ids>/', views.remove_from_wishlist, name='remove_from_wishlist'),
     path('add_to_cart/<str:ids>/', views.add_to_cart, name='add_to_cart'),
+    path('inc/<str:ids>/', views.inc, name='inc'),
+    path('dec/<str:ids>/', views.dec, name='dec'),
+    path('men',views.men),
+    path('women',views.women),
 
 
 

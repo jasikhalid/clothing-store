@@ -78,9 +78,17 @@ def shop(request):
     data = products.objects.all()[:9]
     return render(request,'shop.html',{'data':data})
 
+# def shop_cart(request):
+#     data1=cart.objects.all()
+#     return render(request,'shop-cart.html' ,{'data1':data1})
 def shop_cart(request):
-    data1=cart.objects.all()
-    return render(request,'shop-cart.html' ,{'data1':data1})
+    if 'id' in request.session:
+        u = request.session['id']
+        item = cart.objects.filter(username=u)
+        total=0
+        for i in item:
+            total=i.price*i.quantity
+        return render(request,'shop-cart.html',{'item':item,'total':total})
 
 def product_details(request):
     return render(request,'product-details.html')
@@ -280,6 +288,27 @@ def add_to_cart(request, ids):
         cart_item.save()
 
     return redirect(shop_cart)
+def inc(request,ids):
+    item= cart.objects.get(ids=ids)
+    item.quantity += 1
+    item.save()
+    return redirect(shop_cart)
+def dec(request,ids):
+    item= cart.objects.get(ids=ids)
+    if item.quantity > 0:
+        item.quantity -= 1
+        item.save()
+    else:
+        item.delete()
+    return redirect(shop_cart)
+def men(request):
+    data = products.objects.filter(gender='men')
+    return render(request, 'men-page.html', {'data': data})
+def women(request):
+    data = products.objects.filter(gender='women')
+    return render(request, 'women-page.html', {'data': data})
+
+
 
 
 

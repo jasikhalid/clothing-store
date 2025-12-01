@@ -9,6 +9,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ashion | Template</title>
 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
@@ -69,7 +71,7 @@
                 <div class="col-xl-6 col-lg-7">
                     <nav class="header__menu">
                         <ul>
-                            <li class="active"><a href="">Home</a></li>
+                            <li class="active"><a href="{% url 'index' %}">Home</a></li>
                             <li><a href="#">Women’s</a></li>
                             <li><a href="#">Men’s</a></li>
                             <li><a href="shop">Shop</a></li>
@@ -147,9 +149,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    {% for i in data %}
+                                    {% for i in item %}
                                     <td class="cart__product__item">
-                                        <img src="{{i.img.url}}" alt="" height="100" width="100">
+                                        <img src="{{i.product_image.url}}" alt="" height="100" width="100">
                                         <div class="cart__product__item__title">
                                             <h6>{{i.name}}</h6>
                                             <div class="rating">
@@ -163,13 +165,21 @@
                                     </td>
                                     <td class="cart__price">{{i.price}}</td>
                                     <td class="cart__quantity">
-                                            {{ i.quantity }}
+                                        <form action="{% url 'dec' i.ids %}" method="post" style="display:inline;">
+                                            {% csrf_token %}
+                                            <button type="submit">-</button>
+                                        </form>
+                                        {{ i.quantity }}
+                                        <form action="{% url 'inc' i.ids %}" method="post" style="display:inline;">
+                                            {% csrf_token %}
+                                            <button type="submit">+</button>
+                                        </form>
                                     </td>
                                     <!-- INCREASE / DECREASE BUTTONS -->
         <td>
 
         </td>
-                                    <td class="cart__total">{{i.price}}</td>
+                                    <td class="cart__total">{{total}}</td>
                                     <td class="cart__close"><span class="icon_close"></span></td>
                                 </tr>
                                 {% endfor %}
