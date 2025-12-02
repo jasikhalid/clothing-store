@@ -87,7 +87,7 @@ def shop_cart(request):
         item = cart.objects.filter(username=u)
         total=0
         for i in item:
-            total=i.price*i.quantity
+            total+=i.price*i.quantity
         return render(request,'shop-cart.html',{'item':item,'total':total})
 
 def product_details(request):
