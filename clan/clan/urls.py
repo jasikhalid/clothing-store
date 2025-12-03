@@ -48,6 +48,12 @@ urlpatterns = [
     path('dec/<str:ids>/', views.dec, name='dec'),
     path('men',views.men),
     path('women',views.women),
+    path('payment',views.payment),
+    path('luxury',views.luxury),
+    path('street',views.street),
+    path('sport',views.sport),
+    path('footwear',views.footwear),
+    path('accessory',views.accessory),
 
 
 

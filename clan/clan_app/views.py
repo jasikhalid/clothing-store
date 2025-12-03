@@ -308,7 +308,23 @@ def women(request):
     data = products.objects.filter(gender='women')
     return render(request, 'women-page.html', {'data': data})
 
-
+def payment(request):
+    return render(request, 'payment.html')
+def luxury(request):
+    data=products.objects.filter(category='luxury')
+    return render(request, 'luxury.html', {'data': data})
+def street(request):
+    data=products.objects.filter(category='streetwear')
+    return render(request, 'street-page.html', {'data': data})
+def sport(request):
+    data = products.objects.filter(category='sportswear')
+    return render(request, 'sport-page.html', {'data': data})
+def footwear(request):
+    data=products.objects.filter(category='footwear')
+    return render(request, 'footwear.html', {'data': data})
+def accessory(request):
+    data=products.objects.filter(category='accessories')
+    return render(request, 'accessory.html', {'data': data})
 
 
 
