@@ -1,6 +1,7 @@
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseBadRequest
 from django.shortcuts import render,redirect,get_object_or_404
 from .models import *
+from .forms import CheckoutForm
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
@@ -106,7 +107,83 @@ def contact(request):
         return render(request,'contact.html')
 
 def checkout(request):
-    return render(request,'checkout.html')
+    cart = cart(request)
+    cart_items = list(cart.__iter__())
+    cart_total = cart.get_total_price()
+
+    if request.method == "POST":
+        form = CheckoutForm(request.POST)
+        payment_method = request.POST.get("payment_method", "razorpay")
+
+        if form.is_valid():
+            cd = form.cleaned_data
+            # Create DB Order
+            order = order.objects.create(
+                full_name = cd["full_name"],
+                email = cd["email"],
+                phone = cd.get("phone", ""),
+                address = cd["address"],
+                city = cd["city"],
+                country = cd["country"],
+                post_code = cd.get("post_code", ""),
+                total = cart_total,
+                paid = False,
+            )
+
+            # create OrderItems
+            for item in cart_items:
+                pid = item.get("ids")
+                try:
+                    product_obj = products.objects.get(ids=pid)
+                except products.DoesNotExist:
+                    product_obj = None
+
+                OrderItem.objects.create(
+                    order = order,
+                    product = product_obj,
+                    product_ids = pid,
+                    quantity = item.get("quantity"),
+                    price = item.get("price"),
+                )
+
+            # If user selected COD → skip payment and go to success
+            if payment_method == "cod":
+                # keep paid = False for COD (you can set paid=True if you consider COD paid)
+                cart.clear()
+                return redirect('checkout_success', order_id=order.id)
+
+            # Otherwise create Razorpay order and render payment page
+            amount_paise = int(cart_total * 100)
+            razorpay_order = razorpay_client.order.create(dict(
+                amount=amount_paise,
+                currency="INR",
+                receipt=str(order.id),
+                payment_capture='1'
+            ))
+
+            # you may save razorpay_order['id'] to order.razorpay_order_id if you want
+            order.razorpay_order_id = razorpay_order['id']
+            order.save()
+
+            # render payment page
+            context = {
+                "order": order,
+                "cart_items": cart_items,
+                "cart_total": cart_total,
+                "razorpay_order_id": razorpay_order['id'],
+                "razorpay_key_id": settings.RAZORPAY_KEY_ID,
+                "amount_paise": amount_paise,
+            }
+            return render(request, "payment.html", context)
+
+    else:
+        form = CheckoutForm()
+
+    return render(request, "checkout.html", {
+        "form": form,
+        "cart_items": cart_items,
+        "cart_total": cart_total
+    })
 
 #def adminpanel(request):
 # return render(request,'adminpanel.html')
@@ -308,8 +385,46 @@ def women(request):
     data = products.objects.filter(gender='women')
     return render(request, 'women-page.html', {'data': data})
 
-def payment(request):
-    return render(request, 'payment.html')
+
+def payment_verify(request):
+    if request.method != "POST":
+        return HttpResponseBadRequest("Invalid request")
+
+    payment_id = request.POST.get("razorpay_payment_id")
+    razorpay_order_id = request.POST.get("razorpay_order_id")
+    signature = request.POST.get("razorpay_signature")
+    order_id = request.POST.get("order_id")
+
+    order = get_object_or_404(order, pk=order_id)
+
+    # Verify signature
+    params_dict = {
+        "razorpay_order_id": razorpay_order_id,
+        "razorpay_payment_id": payment_id,
+        "razorpay_signature": signature,
+    }
+
+    try:
+        razorpay_client.utility.verify_payment_signature(params_dict)
+    except Exception:
+        return render(request, "payment_failed.html", {"order": order})
+
+    # Payment is valid → save details
+    order.razorpay_order_id = razorpay_order_id
+    order.razorpay_payment_id = payment_id
+    order.razorpay_signature = signature
+    order.paid = True
+    order.save()
+
+    # Clear cart (optional)
+    try:
+        from .models import cart
+        cart(request).clear()
+    except:
+        request.session["cart"] = {}
+
+    return redirect("checkout_success", order_id=order.id)
+
 def luxury(request):
     data=products.objects.filter(category='luxury')
     return render(request, 'luxury.html', {'data': data})

@@ -48,7 +48,7 @@ urlpatterns = [
     path('dec/<str:ids>/', views.dec, name='dec'),
     path('men',views.men),
     path('women',views.women),
-    path('payment',views.payment),
+    path('payment',views.payment_verify, name='payment_verify'),
     path('luxury',views.luxury),
     path('street',views.street),
     path('sport',views.sport),

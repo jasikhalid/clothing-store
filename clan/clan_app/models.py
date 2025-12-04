@@ -60,3 +60,28 @@ class cart(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.product_name
+class order(models.Model):
+    total = models.IntegerField()
+    username = models.CharField(max_length=40)
+    date = models.DateTimeField(auto_now_add=True)
+    paid = models.BooleanField(default=False)
+    phone_number = models.CharField(max_length=15)
+    street = models.CharField(max_length=30)
+    city = models.CharField(max_length=30)
+    country = models.CharField(max_length=30)
+    postc = models.CharField(max_length=15)
+    payment_method = models.CharField(max_length=15,default="Razorpay")
+    razorpay_order_id = models.CharField(max_length=150,blank=True,null=True)
+    razorpay_payment_id = models.CharField(max_length=150,blank=True,null=True)
+    razorpay_signature = models.CharField(max_length=150,blank=True,null=True)
+    def __str__(self):
+        return self.username
+class orderitem(models.Model):
+    ids=models.CharField(max_length=10,unique=True)
+    product_name = models.CharField(max_length=40)
+    quantity = models.PositiveIntegerField(default=1)
+    price = models.IntegerField()
+    def __str__(self):
+        return self.product_name
+
+

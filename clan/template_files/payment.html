@@ -1,236 +1,110 @@
-<!DOCTYPE html>
-<html lang="zxx">
 {% load static %}
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="description" content="Ashion Template">
-    <meta name="keywords" content="Ashion, unica, creative, html">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ashion | Template</title>
+    <title>Complete Payment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <!-- Razorpay Checkout Script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
-          rel="stylesheet">
-
-    <!-- Css Styles -->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'css/elegant-icons.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}" type="text/css">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+        }
+        .summary-box {
+            border: 1px solid #ddd;
+            padding: 20px;
+            width: 350px;
+            border-radius: 10px;
+        }
+        .pay-btn {
+            background-color: #528FF0;
+            color: #fff;
+            padding: 12px 25px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 
 <body>
-    <!-- Page Preloder -->
-    <div id="preloder">
-        <div class="loader"></div>
+
+    <h1>Complete Your Payment</h1>
+
+    <div class="summary-box">
+        <h2>Order Summary</h2>
+        <p><strong>Order ID:</strong> {{ order.id }}</p>
+        <p><strong>Name:</strong> {{ order.full_name }}</p>
+        <p><strong>Email:</strong> {{ order.email }}</p>
+        <p><strong>Amount:</strong> ₹{{ order.total }}</p>
     </div>
 
-    <!-- Offcanvas Menu Begin -->
-    <div class="offcanvas-menu-overlay"></div>
-    <div class="offcanvas-menu-wrapper">
-        <div class="offcanvas__close">+</div>
-        <ul class="offcanvas__widget">
-            <li><span class="icon_search search-switch"></span></li>
-            <li><a href="#"><span class="icon_heart_alt"></span>
-                <div class="tip">2</div>
-            </a></li>
-            <li><a href="#"><span class="icon_bag_alt"></span>
-                <div class="tip">2</div>
-            </a></li>
-        </ul>
-        <div class="offcanvas__logo">
-            <a href="./index.html"><img src="{% static 'img/logo.png' %}" alt=""></a>
-        </div>
-        <div id="mobile-menu-wrap"></div>
-        <div class="offcanvas__auth">
-            <a href="login/">Login</a>
-            <a href="register/">Register</a>
-        </div>
-    </div>
-    <!-- Offcanvas Menu End -->
+    <br>
+    <button id="pay-button" class="pay-btn">Pay ₹{{ order.total }}</button>
 
-    <!-- Header Section Begin -->
-    <header class="header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-xl-3 col-lg-2">
-                    <div class="header__logo">
-                        <a href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}" alt=""></a>
-                    </div>
-                </div>
-                <div class="col-xl-6 col-lg-7">
-                    <nav class="header__menu">
-                        <ul>
-                            <li class="active"><a href="{% url 'index' %}">Home</a></li>
-                            <li><a href="women">Women’s</a></li>
-                            <li><a href="men">Men’s</a></li>
-                            <li><a href="shop">Shop</a></li>
-                            <li><a href="#">Pages</a>
-                                <ul class="dropdown">
-                                    <li><a href="product-details">Product Details</a></li>
-                                    <li><a href="shopcart">Shop Cart</a></li>
-                                    <li><a href="checkout">Checkout</a></li>
-                                    <li><a href="blog-details">Blog Details</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="blog">Blog</a></li>
-                            <li><a href="contact">Contacts</a></li>
-                        </ul>
-                    </nav>
-                </div>
-                <div class="col-lg-3">
-                    <div class="header__right">
-                        <div class="header__right__auth">
-                            <a href="log">Login</a>
-                            <a href="reg">Register</a>
-                        </div>
-                        <ul class="header__right__widget">
-                            <li><span class="icon_search search-switch"></span></li>
-                            <li><a href="#"><span class="fas fa-heart"></span>
-                                <div class="tip">2</div>
-                            </a></li>
-                            <li><a href="#"><span class="fas fa-shopping-cart"></span>
-                                <div class="tip">2</div>
-                            </a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="canvas__open"><i class="fas fa-bars"></i></div>
-        </div>
-    </header>
-    <!-- Header Section End --><div class="w3-main">
-		<div  style="margin: 0 auto;height:600px;width:600px">
-			<div class="book-form">
-				<h2 class="tittle">Payment Form</h2>
-			    <form action="pay/{{r1}}" method="post" class="creditly-card-form agileinfo_form">
-					{% csrf_token %}
-				   {% for i in r %}
-                    <label>Lab Name</label>
-					<input placeholder="Name" disabled value="{{i.name}}" name="a1" class="name" type="text" required="">
-					<label>User Name</label>
-                    <input placeholder="Name" disabled value="{{i.patient_name}}" name="a2" class="name" type="text" required="">
-					<label>Email</label>
-                    <input placeholder="Name" disabled value="{{i.email}}" name="a3" class="name" type="text" required="">
-					<label>Test Name</label>
-                    <input placeholder="Name" disabled value="{{i.test}}" name="a4" class="name" type="text" required="">
-					<label>Amount</label>
-                    <input placeholder="amount" disabled value="{{r1}}" name="a5" class="name" type="text" required="">
-					<label>Service Charge</label>
-                    <input placeholder="amount" disabled value="{{10}}" name="a6" class="name" type="text" required="">
-					{% endfor %}
 
-					<div class="make wow shake">
-						  <input type="submit" name="submit" value="Pay Now" class="site-btn">
-					</div>
-				</form>
-			</div>
+    <script>
+        var options = {
+            "key": "{{ razorpay_key_id }}",
+            "amount": "{{ amount_paise }}",  // in paise
+            "currency": "INR",
+            "name": "My Clothing Store",
+            "description": "Order #{{ order.id }} Payment",
+            "order_id": "{{ razorpay_order_id }}",
 
-		</div>
+            "handler": function (response) {
+                // Create form with payment details to verify backend
+                var form = document.createElement("form");
+                form.method = "POST";
+                form.action = "{% url 'payment_verify' %}";
 
-		<div class="clear"> </div>
-	</div>
-</div>
-<footer class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 col-md-6 col-sm-7">
-                <div class="footer__about">
-                    <div class="footer__logo">
-                        <a href="./index.html"><img src="{% static 'img/logo.png' %}" alt=""></a>
-                    </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                    cilisis.</p>
-                    <div class="footer__payment">
-                        <a href="#"><img src="{% static 'img/payment/payment-1.png' %}" alt=""></a>
-                        <a href="#"><img src="{% static 'img/payment/payment-2.png' %}" alt=""></a>
-                        <a href="#"><img src="{% static 'img/payment/payment-3.png' %}" alt=""></a>
-                        <a href="#"><img src="{% static 'img/payment/payment-4.png' %}" alt=""></a>
-                        <a href="#"><img src="{% static 'img/payment/payment-5.png' %}" alt=""></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-3 col-sm-5">
-                <div class="footer__widget">
-                    <h6>Quick links</h6>
-                    <ul>
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Blogs</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">FAQ</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-2 col-md-3 col-sm-4">
-                <div class="footer__widget">
-                    <h6>Account</h6>
-                    <ul>
-                        <li><a href="#">My Account</a></li>
-                        <li><a href="#">Orders Tracking</a></li>
-                        <li><a href="#">Checkout</a></li>
-                        <li><a href="#">Wishlist</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-8 col-sm-8">
-                <div class="footer__newslatter">
-                    <h6>NEWSLETTER</h6>
-                    <form action="#">
-                        <input type="text" placeholder="Email">
-                        <button type="submit" class="site-btn">Subscribe</button>
-                    </form>
-                    <div class="footer__social">
-                        <a href="#"><i class="fas fa-facebook"></i></a>
-                        <a href="#"><i class="fas fa-twitter"></i></a>
-                        <a href="#"><i class="fas fa-youtube-play"></i></a>
-                        <a href="#"><i class="fas fa-instagram"></i></a>
-                        <a href="#"><i class="fas fa-pinterest"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                <div class="footer__copyright__text">
-                    <p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fas fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
-                </div>
-                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-            </div>
-        </div>
-    </div>
-</footer>
-<!-- Footer Section End -->
+                // Add CSRF token
+                var csrf = document.createElement("input");
+                csrf.type = "hidden";
+                csrf.name = "csrfmiddlewaretoken";
+                csrf.value = "{{ csrf_token }}";
+                form.appendChild(csrf);
 
-    <!-- Search Begin -->
-<div class="search-model">
-    <div class="h-100 d-flex align-items-center justify-content-center">
-        <div class="search-close-switch">+</div>
-        <form class="search-model-form">
-            <input type="text" id="search-input" placeholder="Search here.....">
-        </form>
-    </div>
-</div>
-<!-- Search End -->
+                // Payment details
+                function addField(name, value) {
+                    var field = document.createElement("input");
+                    field.type = "hidden";
+                    field.name = name;
+                    field.value = value;
+                    form.appendChild(field);
+                }
 
-    <!-- Js Plugins -->
-    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
-    <script src="{% static 'js/jquery-ui.min.js' %}"></script>
-    <script src="{% static 'js/mixitup.min.js' %}"></script>
-    <script src="{% static 'js/jquery.countdown.min.js' %}"></script>
-    <script src="{% static 'js/jquery.slicknav.js' %}"></script>
-    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'js/jquery.nicescroll.min.js' %}"></script>
-    <script src="{% static 'js/main.js' %}"></script>
+                addField("razorpay_payment_id", response.razorpay_payment_id);
+                addField("razorpay_order_id", response.razorpay_order_id);
+                addField("razorpay_signature", response.razorpay_signature);
+                addField("order_id", "{{ order.id }}");
+
+                document.body.appendChild(form);
+                form.submit();
+            },
+
+            "prefill": {
+                "name": "{{ order.full_name }}",
+                "email": "{{ order.email }}",
+                "contact": "{{ order.phone }}"
+            },
+
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+
+        var rzp = new Razorpay(options);
+
+        document.getElementById("pay-button").onclick = function (e) {
+            rzp.open();
+            e.preventDefault();
+        }
+    </script>
+
 </body>
 </html>
